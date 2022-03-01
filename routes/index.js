@@ -9,5 +9,6 @@ router.get('/', (req, res, next) => {
 
 
 router.use('/users', require('./users_route'));
+router.use('/photos', require('./photo_route'));
 
 module.exports = router;
