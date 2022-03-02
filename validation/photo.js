@@ -6,6 +6,7 @@ const createRules = [
     body('title').exists().isLength({ min: 4 }),
     body('url').exists(),
     body('comment').optional(),
+    body('user_id').optional()
 
 ];
 

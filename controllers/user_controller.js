@@ -3,7 +3,7 @@ const { matchedData, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 
 
-const debug = require('debug')('books:user_controller');
+const debug = require('debug')('photoApp:user_controller');
 const models = require('../models');
 
 

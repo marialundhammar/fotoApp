@@ -14,7 +14,7 @@ const basic = async (req, res, next) => {
 
         return res.status(401).send({
             status: 'fail',
-            data: 'Authorization required',
+            data: 'Authorization required1',
         });
     }
 
@@ -33,7 +33,7 @@ const basic = async (req, res, next) => {
 
         return res.status(401).send({
             status: 'fail',
-            data: 'Authorization required',
+            data: 'Authorization required2',
         });
     }
 
@@ -42,14 +42,14 @@ const basic = async (req, res, next) => {
     // decodedPayload = "username:password"
 
     // split decoded payload into "<username>:<password>"
-    const [username, password] = decodedPayload.split(':');
+    const [email, password] = decodedPayload.split(':');
 
     // find user based on the username (bail if no such user exists)
-    const user = await new User({ username }).fetch({ require: false });
+    const user = await new User({ email }).fetch({ require: false });
     if (!user) {
         return res.status(401).send({
             status: 'fail',
-            data: 'Authorization failed',
+            data: 'Authorization failed3',
         });
     }
     const hash = user.get('password');
@@ -60,7 +60,7 @@ const basic = async (req, res, next) => {
     if (!result) {
         return res.status(401).send({
             status: 'fail',
-            data: 'Authorization failed',
+            data: 'Authorization failed4',
         });
     }
 

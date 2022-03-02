@@ -11,14 +11,33 @@ const models = require('../models');
 /*READ ALL PHOTOS*/
 const read = async (req, res) => {
     const all_photos = await models.Photo.fetchAll();
+    //const photos = await new models.Photo({ id: req.params.photoId }) .fetch({ withRelated: ['photo', 'users'] });
 
     res.send({
         status: 'success',
         data: {
+
             photo: all_photos
         }
     });
 }
+
+
+/* const read = async (req, res) => {
+    // get user and also eager-load the books-relation
+    // const user = await new models.User({ id: req.user.id })
+    // 	.fetch({ withRelated: ['books'] });
+
+    // "lazy load" the books-relation
+    await req.user.load('photos');
+
+    res.status(200).send({
+        status: 'success',
+        data: {
+            photos: req.user.related('photos'),
+        },
+    });
+} */
 
 
 /*READ ONE PHOTO ID*/
