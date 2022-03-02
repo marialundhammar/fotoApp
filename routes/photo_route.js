@@ -11,5 +11,7 @@ router.get('/:photoId', photo_controller.showOne);
 
 router.post('/', photoValidationRules.createRules, photo_controller.register)
 
+router.put('/:photoId', photoValidationRules.updateRules, photo_controller.update)
+
 
 module.exports = router;

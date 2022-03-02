@@ -114,11 +114,10 @@ const update = async (req, res) => {
 
 
 
-
-
 module.exports = {
     read,
     register,
-    showOne
+    showOne,
+    update
 
 }
