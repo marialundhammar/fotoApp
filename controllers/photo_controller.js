@@ -9,7 +9,49 @@ const models = require('../models');
 
 
 /*READ ALL PHOTOS*/
+
+
 const read = async (req, res) => {
+    // get user and also eager-load the books-relation
+    // const user = await new models.User({ id: req.user.id })
+    // 	.fetch({ withRelated: ['books'] });
+
+    // "lazy load" the books-relation
+    await req.user.load('photos');
+
+    res.status(200).send({
+        status: 'success',
+        data: {
+            user: req.user.related('photos'),
+        },
+    });
+}
+
+const readOne = async (req, res) => {
+    // get user and also eager-load the books-relation
+    // const user = await new models.User({ id: req.user.id })
+    // 	.fetch({ withRelated: ['books'] });
+
+    await req.user.load('photos');
+
+    const specifik_photo = await new models.Photo({ id: req.params.photoId }).fetch();
+    // "lazy load" the books-relation
+    const related_photos = req.user.related('photos');
+    const existing_photo = related_photos.find(photo => photo.id == specifik_photo.id);
+
+    res.status(200).send({
+        status: 'success',
+        data: {
+            user: existing_photo,
+        },
+    });
+
+    //@ts-nocheckLÄGG IN FEL MEDDELANDE
+
+}
+
+
+/* const read = async (req, res) => {
     const all_photos = await models.Photo.fetchAll();
     //const photos = await new models.Photo({ id: req.params.photoId }) .fetch({ withRelated: ['photo', 'users'] });
 
@@ -20,7 +62,7 @@ const read = async (req, res) => {
             photo: all_photos
         }
     });
-}
+} */
 
 
 /* const read = async (req, res) => {
@@ -55,22 +97,39 @@ const showOne = async (req, res) => {
 
 const register = async (req, res) => {
     // check for any validation errors
+
+
+
+
+    //const specifik_photo = await new models.Photo({ id: req.params.photoId }).fetch();
+    // "lazy load" the books-relation
+
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).send({ status: 'fail', data: errors.array() });
     }
 
     // get only the validated data from the request
+    const userId = req.user.id;
     const validData = matchedData(req);
+    validData.user_id = userId;
+
 
     try {
         const photo = await new models.Photo(validData).save();
+
         debug("Saved new photo successfully: %O", photo);
+
+
 
         res.send({
             status: 'success',
             data: {
-                photo
+                title: validData.title,
+                comment: validData.comment,
+                url: validData.url,
+                user_id: userId
             },
         });
 
@@ -137,6 +196,7 @@ module.exports = {
     read,
     register,
     showOne,
-    update
+    update,
+    readOne
 
 }

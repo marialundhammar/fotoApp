@@ -21,6 +21,8 @@ const read = async (req, res) => {
 
 
 
+
+
 const register = async (req, res) => {
     // check for any validation errors
     const errors = validationResult(req);
