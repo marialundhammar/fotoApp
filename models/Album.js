@@ -1,5 +1,15 @@
+
 module.exports = (bookshelf) => {
-    return bookshelf.model('Almbum', {
-        tableName: 'album'
-    });
-};
+    return bookshelf.model('Album', {
+        tableName: 'album',
+        users() {
+            return this.belongsTo('User');
+        },
+        photos() {
+            return this.belongsToMany('Photo');
+        }
+    },
+        {
+
+        });
+}

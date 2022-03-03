@@ -1,6 +1,3 @@
-
-
-
 const { matchedData, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 
@@ -9,14 +6,131 @@ const debug = require('debug')('photoApp:photo_controller');
 const models = require('../models');
 
 
-/*READ ALL PHOTOS*/
+/*READ ALL ALBUMS*/
 const read = async (req, res) => {
-    const all_albums = await models.Album.fetchAll();
 
-    res.send({
+    await req.user.load('albums');
+
+    res.status(200).send({
         status: 'success',
         data: {
-            photo: all_albums
-        }
+            user: req.user.related('albums'),
+        },
     });
+}
+
+const readOne = async (req, res) => {
+
+    const album = await new models.Album({ id: req.params.albumId })
+        .fetch({ withRelated: ['photos'] });
+
+
+    res.status(200).send({
+        status: 'success',
+        data: {
+            album
+        },
+    });
+
+
+
+}
+
+
+
+const register = async (req, res) => {
+
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ status: 'fail', data: errors.array() });
+    }
+
+    // get only the validated data from the request
+    const userId = req.user.id;
+    const validData = matchedData(req);
+    validData.user_id = userId;
+
+
+
+    try {
+        const album = await new models.Album(validData).save();
+
+        debug("Saved new album successfully: %O", album);
+
+
+
+        res.send({
+            status: 'success',
+            data: {
+                user_id: userId,
+                title: validData.title,
+
+            },
+        });
+
+    } catch (error) {
+        res.status(500).send({
+            status: 'error',
+            message: 'Exception thrown in database when creating a new album',
+
+        });
+        throw error;
+
+    }
+}
+
+const update = async (req, res) => {
+    const albumId = req.params.albumId;
+
+    // make sure user exists
+    const album = await new models.Album({ id: albumId }).fetch({ require: false });
+    if (!album) {
+        debug("Album to update was not found. %o", { id: albumId });
+        res.status(404).send({
+            status: 'fail',
+            data: 'Photo Not Found',
+        });
+        return;
+    }
+
+    // check for any validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ status: 'fail', data: errors.array() });
+    }
+
+    // get only the validated data from the request
+    const validData = matchedData(req);
+
+    try {
+        const updatedAlbum = await album.save(validData);
+        debug("Updated photo successfully: %O", updatedAlbum);
+
+        res.send({
+            status: 'success',
+            data: {
+                album,
+            },
+        });
+
+    } catch (error) {
+        res.status(500).send({
+            status: 'error',
+            message: 'Exception thrown in database when updating a new user.',
+        });
+        throw error;
+    }
+}
+
+
+
+
+
+
+module.exports = {
+    read,
+    readOne,
+    register,
+    update
 }
