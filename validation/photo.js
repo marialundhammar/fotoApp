@@ -16,11 +16,14 @@ const updateRules = [
 ];
 
 
-
+const addToAlbum = [
+    body('photo_id').exists().isInt({ min: 1 })
+]
 
 
 module.exports = {
     createRules,
-    updateRules
+    updateRules,
+    addToAlbum
 
 }

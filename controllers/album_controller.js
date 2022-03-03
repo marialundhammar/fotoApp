@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 
 const debug = require('debug')('photoApp:photo_controller');
 const models = require('../models');
+const Album = require('../models/Album');
 
 
 /*READ ALL ALBUMS*/
@@ -53,7 +54,10 @@ const register = async (req, res) => {
 
 
 
+
+
     try {
+
         const album = await new models.Album(validData).save();
 
         debug("Saved new album successfully: %O", album);
@@ -79,6 +83,60 @@ const register = async (req, res) => {
 
     }
 }
+
+const registerPhoto = async (req, res) => {
+
+    // check for any validation errors
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ status: 'fail', data: errors.array() });
+    }
+
+
+    const validData = matchedData(req);
+    console.log(validData);
+
+    console.log(req.album);
+
+    const album = await new models.Album({ id: req.params.albumId }).fetch({ withRelated: ['photos'] })
+
+    const photos = album.related('photos');
+
+    const existing_photo = photos.find(photo => photo.id == validData.photo_id);
+
+    if (existing_photo) {
+        return res.send({
+            status: 'fail',
+            data: 'Photo already exist'
+        })
+    }
+
+
+    try {
+
+        const result = await album.photos().attach(validData.photo_id);
+        debug("Added photo to album successfully: %O", result);
+
+        res.send({
+            status: 'success',
+            data: null
+        });
+
+    } catch (error) {
+        res.status(500).send({
+            status: 'error',
+            message: 'Exception thrown in database when adding a photo to an album.',
+        });
+        throw error;
+    }
+}
+
+
+
+
+
+
 
 const update = async (req, res) => {
     const albumId = req.params.albumId;
@@ -128,9 +186,11 @@ const update = async (req, res) => {
 
 
 
+
 module.exports = {
     read,
     readOne,
     register,
-    update
+    registerPhoto,
+    update,
 }
