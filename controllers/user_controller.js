@@ -7,19 +7,6 @@ const debug = require('debug')('photoApp:user_controller');
 const models = require('../models');
 
 
-const read = async (req, res) => {
-    const all_users = await models.User.fetchAll();
-
-    res.send({
-        status: 'success',
-        data: {
-            users: all_users
-        }
-    });
-}
-
-
-
 const register = async (req, res) => {
     // check for any validation errors
     const errors = validationResult(req);
@@ -52,7 +39,9 @@ const register = async (req, res) => {
         res.send({
             status: 'success',
             data: {
-                user,
+                email: validData.email,
+                first_name: validData.first_name,
+                last_name: validData.last_name,
             },
         });
 
@@ -69,7 +58,6 @@ const register = async (req, res) => {
 
 
 module.exports = {
-    read,
     register,
 
 }
