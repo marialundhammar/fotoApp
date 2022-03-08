@@ -16,29 +16,47 @@ const read = async (req, res) => {
 
     res.status(200).send({
         status: 'success',
-        data: {
+        data:
             albums
-        },
+        ,
     });
 }
 
+
+/*     album_id = req.params.albumId;
+ 
+    const allAlbums = await new models.Album().where({ 'album_id': album_id }).fetchAll({ columns: ['id', 'title'].related('photos') });
+ 
+    /*   const albums = req.user.related('albums'); */
+
+/* res.status(200).send({
+    status: 'success',
+    data:
+        allAlbums
+    ,
+}); */
+
+
 const readOne = async (req, res) => {
 
-    const album = await new models.Album({ id: req.params.albumId })
-        .fetch({ withRelated: ['photos'] });
+    album_id = req.params.albumId;
+    console.log(album_id)
+
+    const specAlbums = await new models.Album().where({ 'id': album_id }).fetch({
+        withRelated: ['photos'],
+        columns: ['id', 'title']
+    }).then(function (classified) {
+        res.json(classified.toJSON({ omitPivot: true }));
+    });
+
 
 
     res.status(200).send({
         status: 'success',
-        data: {
-            album
-        },
+        data:
+            specAlbums
     });
-
-
-
 }
-
 
 
 const register = async (req, res) => {
@@ -57,6 +75,8 @@ const register = async (req, res) => {
 
     try {
 
+
+
         const album = await new models.Album(validData).save();
 
         debug("Saved new album successfully: %O", album);
@@ -65,12 +85,8 @@ const register = async (req, res) => {
 
         res.send({
             status: 'success',
-            data: {
-                user_id: userId,
-                title: validData.title,
-
-
-            },
+            data:
+                album
         });
 
     } catch (error) {
@@ -138,6 +154,7 @@ const update = async (req, res) => {
 
     // make sure user exists
     const album = await new models.Album({ id: albumId }).fetch({ require: false });
+
     if (!album) {
         debug("Album to update was not found. %o", { id: albumId });
         res.status(404).send({
@@ -162,9 +179,9 @@ const update = async (req, res) => {
 
         res.send({
             status: 'success',
-            data: {
+            data:
                 album,
-            },
+
         });
 
     } catch (error) {

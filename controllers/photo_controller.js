@@ -29,9 +29,9 @@ const read = async (req, res) => {
 
         res.status(200).send({
             status: 'success',
-            data: {
+            data:
                 allPhotos
-            },
+            ,
         });
 
     }
@@ -52,9 +52,9 @@ const readOne = async (req, res) => {
 
     res.status(200).send({
         status: 'success',
-        data: {
+        data:
             specifik_photo,
-        },
+
     });
 }
 
@@ -79,9 +79,8 @@ const register = async (req, res) => {
 
         res.send({
             status: 'success',
-            data: {
+            data:
                 photo
-            },
         });
 
     } catch (error) {
@@ -125,9 +124,9 @@ const update = async (req, res) => {
 
         res.send({
             status: 'success',
-            data: {
+            data:
                 photo,
-            },
+
         });
 
     } catch (error) {
