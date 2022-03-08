@@ -8,9 +8,16 @@ module.exports = (bookshelf) => {
 
         photos() {
             return this.hasMany('Photo');
-        }
+        },
+    },
 
-    });
+
+
+        {
+            async fetchById(id) {
+                return await new this({ id }).fetch();
+            },
+        });
 
 };
 

@@ -49,7 +49,7 @@ const basic = async (req, res, next) => {
     if (!user) {
         return res.status(401).send({
             status: 'fail',
-            data: 'Authorization failed3',
+            data: 'Authorization failed',
         });
     }
     const hash = user.get('password');

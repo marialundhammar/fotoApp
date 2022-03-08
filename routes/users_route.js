@@ -4,8 +4,6 @@ const user_controller = require('../controllers/user_controller')
 const userValidationRules = require('../validation/user');
 
 
-
-
 router.post('/', userValidationRules.createRules, user_controller.register)
 
 
