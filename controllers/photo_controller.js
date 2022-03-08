@@ -1,46 +1,29 @@
 
 const { matchedData, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
-
-
 const debug = require('debug')('photoApp:photo_controller');
 const models = require('../models');
-
-
-
 
 /*READ ALL PHOTOS*/
 const read = async (req, res) => {
 
     user_id = req.user.id;
 
+    /*FETCH ALL PHOTOS THAT BELONGS TO USER*/
     const allPhotos = await new models.Photo().where({ 'user_id': user_id }).fetchAll({ columns: ['id', 'title', 'url', 'comment'] });
 
-    console.log(allPhotos);
-
-    if (!allPhotos) {
-        debug("Photo to update was not found. %o", { id: photoId });
-        res.status(404).send({
-            status: 'fail',
-            data: 'Photo Not Found',
-        });
-        return;
-    } else {
-
-        res.status(200).send({
-            status: 'success',
-            data:
-                allPhotos
-            ,
-        });
-
-    }
-
-
-
+    res.status(200).send({
+        status: 'success',
+        data:
+            allPhotos
+    });
 }
 
-//READ ONE PHOTO 
+
+
+
+
+//FETCH ONLY ONE PHOTO 
 const readOne = async (req, res) => {
 
 

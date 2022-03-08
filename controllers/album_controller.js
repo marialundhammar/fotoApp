@@ -43,8 +43,7 @@ const readOne = async (req, res) => {
     console.log(album_id)
 
     const specAlbums = await new models.Album().where({ 'id': album_id }).fetch({
-        withRelated: ['photos'],
-        columns: ['id', 'title']
+        withRelated: ['photos'], columns: ['id', 'title']
     }).then(function (classified) {
         res.json(classified.toJSON({ omitPivot: true }));
     });
