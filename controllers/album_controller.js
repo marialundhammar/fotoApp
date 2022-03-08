@@ -12,10 +12,12 @@ const read = async (req, res) => {
 
     await req.user.load('albums');
 
+    const albums = req.user.related('albums');
+
     res.status(200).send({
         status: 'success',
         data: {
-            user: req.user.related('albums'),
+            albums
         },
     });
 }
@@ -43,18 +45,15 @@ const register = async (req, res) => {
 
 
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
-        return res.status(422).send({ status: 'fail', data: errors.array() });
+        return res.status(422).send({ status: 'fail, the title needs to be at leat 4 characters long', data: errors.array() });
     }
 
     // get only the validated data from the request
     const userId = req.user.id;
     const validData = matchedData(req);
     validData.user_id = userId;
-
-
-
-
 
     try {
 
@@ -69,6 +68,7 @@ const register = async (req, res) => {
             data: {
                 user_id: userId,
                 title: validData.title,
+
 
             },
         });
@@ -131,11 +131,6 @@ const registerPhoto = async (req, res) => {
         throw error;
     }
 }
-
-
-
-
-
 
 
 const update = async (req, res) => {

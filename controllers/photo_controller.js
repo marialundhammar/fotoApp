@@ -12,62 +12,51 @@ const models = require('../models');
 /*READ ALL PHOTOS*/
 const read = async (req, res) => {
 
-
-
     user_id = req.user.id;
 
+    const allPhotos = await new models.Photo().where({ 'user_id': user_id }).fetchAll({ columns: ['id', 'title', 'url', 'comment'] });
 
-    const allPhotos = await new models.Photo().where('user_id', '=', user_id).fetchAll({ columns: ['id', 'title', 'url', 'comment'] });
+    console.log(allPhotos);
 
-    res.status(200).send({
-        status: 'success',
-        data: {
-            photos: allPhotos
-        },
-    });
+    if (!allPhotos) {
+        debug("Photo to update was not found. %o", { id: photoId });
+        res.status(404).send({
+            status: 'fail',
+            data: 'Photo Not Found',
+        });
+        return;
+    } else {
+
+        res.status(200).send({
+            status: 'success',
+            data: {
+                allPhotos
+            },
+        });
+
+    }
+
+
+
 }
-
 
 //READ ONE PHOTO 
 const readOne = async (req, res) => {
 
-    const readOne = async (req, res) => {
 
+    user_id = req.user.id;
+    photo_id = req.params.photoId;
+    console.log(photo_id);
 
-        await req.user.load('photos');
+    const specifik_photo = await new models.Photo().where({ user_id: user_id, id: photo_id }).fetchAll({ columns: ['id', 'title', 'url', 'comment'] });
 
-        const specifik_photo = await new models.Photo({ id: req.params.photoId }).fetch();
-
-        const related_photos = req.user.related('photos');
-        const existing_photo = related_photos.find(photo => photo.id == specifik_photo.id);
-
-        res.status(200).send({
-            status: 'success',
-            data: {
-                user: existing_photo,
-            },
-        });
-
-
-    }
-
-    try {
-        res.status(200).send({
-            status: 'success',
-            data: {
-                photo: existing_photo,
-            },
-        });
-
-    } catch (error) {
-        res.status(500).send({
-            status: 'error',
-            message: 'Exception thrown in database when creating a new photo',
-        });
-        throw error;
-    }
+    res.status(200).send({
+        status: 'success',
+        data: {
+            specifik_photo,
+        },
+    });
 }
-
 
 
 const register = async (req, res) => {
@@ -88,15 +77,10 @@ const register = async (req, res) => {
 
         debug("Saved new photo successfully: %O", photo);
 
-
-
         res.send({
             status: 'success',
             data: {
-                title: validData.title,
-                comment: validData.comment,
-                url: validData.url,
-                user_id: userId
+                photo
             },
         });
 
@@ -116,8 +100,8 @@ const update = async (req, res) => {
 
     // make sure user exists
     const photo = await new models.Photo({ id: photoId }).fetch({ require: false });
+
     if (!photo) {
-        debug("Photo to update was not found. %o", { id: photoId });
         res.status(404).send({
             status: 'fail',
             data: 'Photo Not Found',
@@ -127,8 +111,9 @@ const update = async (req, res) => {
 
     // check for any validation errors
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
-        return res.status(422).send({ status: 'fail', data: errors.array() });
+        return res.status(422).send({ status: 'fail, string must be at least 3 chars long,url string must be a url, comment string must be at least 3 chars long', data: errors.array() });
     }
 
     // get only the validated data from the request
