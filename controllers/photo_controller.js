@@ -21,35 +21,32 @@ const read = async (req, res) => {
 
 
 
-
-
 //FETCH ONLY ONE PHOTO 
 const readOne = async (req, res) => {
 
     user_id = req.user.id;
     photo_id = req.params.photoId;
-    console.log(photo_id);
 
-    const specifik_photo = await new models.Photo().where({ user_id: user_id, id: photo_id }).fetchAll({ columns: ['id', 'title', 'url', 'comment'] });
 
-    console.log("this is your photos" + specifik_photo);
+    const user = await models.User.fetchById(user_id, { withRelated: ['photos'] });
+    const specifik_photo = user.related('photos').find(photo => photo.id == photo_id);
 
-    if (specifik_photo.isEmpty({})) {
-        res.status(404).send({
-            status: 'error',
-            message: 'Photo with that ID was not found',
+    if (!specifik_photo) {
+        return res.status(404).send({
+            status: 'fail',
+            data: 'No photo found for this user',
         });
-        return;
 
-    } else {
-        res.status(200).send({
-            status: 'success',
-            data:
-                specifik_photo,
-
-        });
     }
+
+    res.status(200).send({
+        status: 'success',
+        data:
+            specifik_photo,
+
+    });
 }
+
 
 
 const register = async (req, res) => {
@@ -87,9 +84,13 @@ const register = async (req, res) => {
 
 
 const update = async (req, res) => {
-    const photoId = req.params.photoId;
+    const photo_id = req.params.photoId;
+    const user_id = req.user.id;
 
-    const photo = await new models.Photo({ id: photoId }).fetch({ require: false });
+    const user = await models.User.fetchById(user_id, { withRelated: ['photos'] });
+
+    const photo = await new models.Photo({ id: photo_id, user_id: user_id }).fetch({ require: false });
+
 
     if (!photo) {
         res.status(404).send({

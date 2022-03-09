@@ -36,7 +36,7 @@ const readOne = async (req, res) => {
     const albumUser = user.related('albums').find(album => album.id == req.params.albumId);
 
     if (!albumUser) {
-        return res.send({
+        return res.status(404).send({
             status: 'fail',
             data: 'Not users Album',
         });
@@ -115,16 +115,13 @@ const registerPhoto = async (req, res) => {
             status: 'fail',
             data: 'Photo already exist'
         })
-    } else if (!albumUser) {
+    } if (!albumUser || !photosUser) {
         return res.send({
             status: 'fail',
-            data: 'Not users Album',
+            data: 'Not users Album or users photo',
         });
-    } else if (photosUser) {
-        return res.send({
-            status: 'fail',
-            data: 'Not users photo',
-        });
+
+
     } else {
         try {
             const result = await album.photos().attach(validData.photo_id);
