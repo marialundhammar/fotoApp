@@ -91,7 +91,6 @@ const update = async (req, res) => {
 
     const photo = await new models.Photo({ id: photo_id, user_id: user_id }).fetch({ require: false });
 
-
     if (!photo) {
         res.status(404).send({
             status: 'fail',
@@ -129,15 +128,9 @@ const update = async (req, res) => {
     }
 }
 
-
-
-
-
-
 module.exports = {
     read,
     register,
     update,
     readOne
-
 }

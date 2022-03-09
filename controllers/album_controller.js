@@ -35,6 +35,8 @@ const readOne = async (req, res) => {
     //fetching users Album
     const albumUser = user.related('albums').find(album => album.id == req.params.albumId);
 
+
+
     if (!albumUser) {
         return res.status(404).send({
             status: 'fail',
@@ -44,6 +46,8 @@ const readOne = async (req, res) => {
     }
 
     const photosAlbum = await models.Album.fetchById(album_id, { withRelated: ['photos'], columns: ['id', 'title'] })
+
+
 
     res.status(200).send({
         status: 'success',

@@ -2,6 +2,7 @@ module.exports = (bookshelf) => {
     return bookshelf.model('Album',
         {
             tableName: 'album',
+
             users() {
                 return this.belongsTo('User');
             },
@@ -15,4 +16,9 @@ module.exports = (bookshelf) => {
                 return await new this({ id }).fetch(fetchOptions);
             }
         })
+
+
+
+
+
 }
