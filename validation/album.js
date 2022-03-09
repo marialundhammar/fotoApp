@@ -7,7 +7,7 @@ const createRules = [
 ];
 
 const updateRules = [
-    body('title').exists().isLength({ min: 4 }),
+    body('title').exists().isLength({ min: 3 }),
 ];
 
 

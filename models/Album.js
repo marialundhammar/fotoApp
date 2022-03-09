@@ -9,5 +9,10 @@ module.exports = (bookshelf) => {
                 return this.belongsToMany('Photo');
 
             }
-        });
+        },
+        {
+            async fetchById(id, fetchOptions = {}) {
+                return await new this({ id }).fetch(fetchOptions);
+            }
+        })
 }

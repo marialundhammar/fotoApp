@@ -26,25 +26,36 @@ const read = async (req, res) => {
 //FETCH ONLY ONE PHOTO 
 const readOne = async (req, res) => {
 
-
     user_id = req.user.id;
     photo_id = req.params.photoId;
     console.log(photo_id);
 
     const specifik_photo = await new models.Photo().where({ user_id: user_id, id: photo_id }).fetchAll({ columns: ['id', 'title', 'url', 'comment'] });
 
-    res.status(200).send({
-        status: 'success',
-        data:
-            specifik_photo,
+    console.log("this is your photos" + specifik_photo);
 
-    });
+    if (specifik_photo.isEmpty({})) {
+        res.status(404).send({
+            status: 'error',
+            message: 'Photo with that ID was not found',
+        });
+        return;
+
+    } else {
+        res.status(200).send({
+            status: 'success',
+            data:
+                specifik_photo,
+
+        });
+    }
 }
 
 
 const register = async (req, res) => {
 
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
         return res.status(422).send({ status: 'fail', data: errors.array() });
     }
@@ -57,9 +68,7 @@ const register = async (req, res) => {
 
     try {
         const photo = await new models.Photo(validData).save();
-
         debug("Saved new photo successfully: %O", photo);
-
         res.send({
             status: 'success',
             data:
@@ -80,7 +89,6 @@ const register = async (req, res) => {
 const update = async (req, res) => {
     const photoId = req.params.photoId;
 
-    // make sure user exists
     const photo = await new models.Photo({ id: photoId }).fetch({ require: false });
 
     if (!photo) {
@@ -91,14 +99,13 @@ const update = async (req, res) => {
         return;
     }
 
-    // check for any validation errors
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
         return res.status(422).send({ status: 'fail, string must be at least 3 chars long,url string must be a url, comment string must be at least 3 chars long', data: errors.array() });
     }
 
-    // get only the validated data from the request
+
     const validData = matchedData(req);
 
     try {
