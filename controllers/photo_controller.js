@@ -87,8 +87,6 @@ const update = async (req, res) => {
     const photo_id = req.params.photoId;
     const user_id = req.user.id;
 
-    const user = await models.User.fetchById(user_id, { withRelated: ['photos'] });
-
     const photo = await new models.Photo({ id: photo_id, user_id: user_id }).fetch({ require: false });
 
     if (!photo) {
