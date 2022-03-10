@@ -11,6 +11,7 @@ const Album = require('../models/Album');
 const read = async (req, res) => {
 
     const user_id = req.user.id;
+    //fetching user 
     const user = await models.User.fetchById(user_id, { withRelated: ['albums'] });
     const albums = user.related('albums');
 
@@ -35,8 +36,7 @@ const readOne = async (req, res) => {
     //fetching users Album
     const albumUser = user.related('albums').find(album => album.id == req.params.albumId);
 
-
-
+    //If album does not exisit 
     if (!albumUser) {
         return res.status(404).send({
             status: 'fail',
@@ -45,9 +45,8 @@ const readOne = async (req, res) => {
 
     }
 
+    //get Album with all photos
     const photosAlbum = await models.Album.fetchById(album_id, { withRelated: ['photos'], columns: ['id', 'title'] })
-
-
 
     res.status(200).send({
         status: 'success',
@@ -58,6 +57,7 @@ const readOne = async (req, res) => {
 
 
 const register = async (req, res) => {
+
     //Check if input is following validation rules 
     const errors = validationResult(req);
 
@@ -161,7 +161,7 @@ const update = async (req, res) => {
     }
 
     const album = await new models.Album({ id: album_id, user_id: user_id }).fetch({ require: false });
-    //MAYBE ADD DIFFERENT ERROR MESSAGE FOR album_id and user_id
+
 
     //Check if album belongs to user or if the album exisit 
     if (!album) {
