@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "65324c68-5c4e-4ffe-95ca-7d75181b6907",
+		"name": "Album",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET/albums",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "mariaHL@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "mariaspass",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/albums",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"albums"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET/albums:id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "mariaHL@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "mariaspass",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/albums/5",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"albums",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST/albums",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "mariaHL@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "mariaspass",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Marsalbum\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/albums",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"albums"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT/albums:id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "mariaHL@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "mariaspass",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Confetti'R'Us\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/albums/8",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"albums",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /albums/:albumId/photos",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "mariaHL@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "mariaspass",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " { \n     \"photo_id\": 42\n     \n     }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/albums/7/photos",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"albums",
+						"7",
+						"photos"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "64656391-e565-4eaa-a94c-862a4e66b4d7",
+		"name": "photos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST/photos",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "mariaHL@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "mariaspass",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n            \"title\": \"Livet leker\",\n                \"url\": \"https://www.pexels.com/sv-se/foto/svartvitt-hander-kvinna-vintage-10998586/\", \n                \"comment\": \"NYE 202222!!\"\n    }\n            \n                \n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/photos",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"photos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET/photos",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "mariaHL@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "mariaspass",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/photos",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"photos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET/photo:id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "mariaHL@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "mariaspass",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n                \"title\": \"New Yeeears Evening 20223333\",\n                \"url\": \"https://www.pexels.com/sv-se/foto/mork-farger-firande-stralkastare-1115224/\", \n                \"comment\": \"NYE 202222!!\",\n                \"user_id\": 1\n                \n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/photos/2",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"photos",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT/photo:id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "mariaHL@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "mariaspass",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n            \"title\": \"Livet leker jaaaa\",\n                \"url\": \"https://www.pexels.com/sv-se/foto/svartvitt-hander-kvinna-vintage-10998586/\", \n                \"comment\": \"NYE 202222!!\"\n    }\n            ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/photos/30",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"photos",
+						"30"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

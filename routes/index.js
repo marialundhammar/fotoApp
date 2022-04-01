@@ -9,7 +9,7 @@ router.get('/', (req, res, next) => {
 
 
 //USE
-router.use('/users', require('./users_route'));
+router.use('/register', require('./users_route'));
 router.use('/photos', auth.basic, require('./photo_route'));
 router.use('/albums', auth.basic, require('./album_route'));
 

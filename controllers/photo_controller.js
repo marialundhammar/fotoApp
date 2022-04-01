@@ -9,7 +9,7 @@ const read = async (req, res) => {
 
     user_id = req.user.id;
 
-    /*FETCH ALL PHOTOS THAT BELONGS TO USER*/
+    //fetching photos that belongs to user with filter where - works good 
     const allPhotos = await new models.Photo().where({ 'user_id': user_id }).fetchAll({ columns: ['id', 'title', 'url', 'comment'] });
 
     res.status(200).send({
@@ -19,15 +19,13 @@ const read = async (req, res) => {
     });
 }
 
-
-
 //FETCH ONLY ONE PHOTO 
 const readOne = async (req, res) => {
 
     user_id = req.user.id;
     photo_id = req.params.photoId;
 
-
+    //fetching user 
     const user = await models.User.fetchById(user_id, { withRelated: ['photos'] });
     const specifik_photo = user.related('photos').find(photo => photo.id == photo_id);
 
@@ -36,14 +34,12 @@ const readOne = async (req, res) => {
             status: 'fail',
             data: 'No photo found for this user',
         });
-
     }
 
     res.status(200).send({
         status: 'success',
         data:
             specifik_photo,
-
     });
 }
 
@@ -52,7 +48,6 @@ const readOne = async (req, res) => {
 const register = async (req, res) => {
 
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
         return res.status(422).send({ status: 'fail', data: errors.array() });
     }
